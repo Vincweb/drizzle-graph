@@ -5,11 +5,15 @@ on:
     tags: ['v*']
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      # To create the GitHub Release, and to sign the npm tarball when there is a token for it.
+      contents: write
       id-token: write
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
@@ -20,12 +24,40 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
-      # The README carries relative image paths, which GitHub resolves and npmjs.com does not.
+
+      # The README carries relative image paths, which GitHub resolves and a package page does not.
       # Point them at this tag's raw files, in the tarball only — the repository keeps them relative.
-      - name: Absolutise the README images for the npm page
+      - name: Absolutise the README images for the package page
         run: |
           sed -i 's#src="docs/media/#src="https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docs/media/#g' README.md
           grep -c 'raw.githubusercontent.com' README.md
-      - run: pnpm publish --access public --no-git-checks --provenance
+
+      # `prepare` builds on pack, and its output lands on stdout too — the filename is the last line.
+      - name: Pack the tarball
+        id: pack
+        run: echo "file=$(npm pack --silent | tail -1)" >> "$GITHUB_OUTPUT"
+
+      # The release is the whole publication when there is no npm token: the tarball hangs off it,
+      # and `npm i -D <that URL>` installs the built package without a registry.
+      - name: Create the GitHub Release
+        run: |
+          gh release create "$TAG" "$FILE" --title "$TAG" --generate-notes --notes "
+          Install this release without a registry:
+
+              npm i -D https://github.com/$REPO/releases/download/$TAG/$FILE
+
+          Or straight from the repository, which builds it on install:
+
+              npm i -D github:$REPO#$TAG
+          "
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          FILE: ${{ steps.pack.outputs.file }}
+          REPO: ${{ github.repository }}
+
+      # npm is optional: without a token the release above is the publication.
+      - name: Publish to npm
+        if: env.NPM_TOKEN != ''
+        run: pnpm publish --access public --no-git-checks --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}

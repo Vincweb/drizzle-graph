@@ -9,7 +9,7 @@
 A git-log-style view of the Drizzle Kit v1 migration DAG, and a CI guard that fails
 a pull request before it can leave your target branch forked.
 
-[![npm](https://img.shields.io/npm/v/drizzle-graph?style=flat-square&label=npm&labelColor=08090b&color=3b82f6)](https://www.npmjs.com/package/drizzle-graph)
+[![release](https://img.shields.io/github/v/release/Vincweb/drizzle-graph?style=flat-square&label=release&labelColor=08090b&color=3b82f6)](https://github.com/Vincweb/drizzle-graph/releases/latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/Vincweb/drizzle-graph/ci.yml?branch=main&style=flat-square&label=CI&labelColor=08090b&color=3b82f6)](https://github.com/Vincweb/drizzle-graph/actions/workflows/ci.yml)
 [![node](https://img.shields.io/badge/node-%E2%89%A5%2020-3b82f6?style=flat-square&labelColor=08090b)](package.json)
 [![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-3b82f6?style=flat-square&labelColor=08090b)](package.json)
@@ -26,8 +26,8 @@ a pull request before it can leave your target branch forked.
 <br>
 
 ```sh
-npx drizzle-graph            # browse it
-npx drizzle-graph --check    # fail CI when the graph has more than one head
+drizzle-graph            # browse it
+drizzle-graph --check    # fail CI when the graph has more than one head
 ```
 
 ## Why
@@ -45,18 +45,20 @@ invisible until they hurt:
 
 ## Install
 
-No install needed to try it:
+Every release carries a built tarball, so there is no registry in the way:
 
 ```sh
-npx drizzle-graph
+npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.0/drizzle-graph-0.1.0.tgz
 ```
 
-As a dev dependency:
+Or straight from the repository, which builds it as it installs:
 
 ```sh
-npm i -D drizzle-graph
-pnpm add -D drizzle-graph
+npm i -D github:Vincweb/drizzle-graph
+pnpm add -D github:Vincweb/drizzle-graph
 ```
+
+Then `pnpm drizzle-graph`, or `drizzle-graph` on its own inside a package script.
 
 Requires Node 20+. Works with any Drizzle Kit v1 migrations folder (one directory per migration,
 each holding `migration.sql` and `snapshot.json`).

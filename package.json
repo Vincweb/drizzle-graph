@@ -55,6 +55,7 @@
     "format:check": "prettier --check .",
     "test": "tsx --test test/*.test.ts",
     "check": "pnpm lint && pnpm type-check && pnpm test && pnpm build",
+    "prepare": "npm run build",
     "prepublishOnly": "pnpm check"
   },
   "devDependencies": {
