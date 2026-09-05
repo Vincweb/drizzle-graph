@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+.DS_Store
+.env
+.eslintcache
+*.tsbuildinfo
+
+# …except the decoy the discovery test needs
+!test/fixtures/discover/node_modules/

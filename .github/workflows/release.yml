@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      # The README carries relative image paths, which GitHub resolves and npmjs.com does not.
+      # Point them at this tag's raw files, in the tarball only — the repository keeps them relative.
+      - name: Absolutise the README images for the npm page
+        run: |
+          sed -i 's#src="docs/media/#src="https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docs/media/#g' README.md
+          grep -c 'raw.githubusercontent.com' README.md
+      - run: pnpm publish --access public --no-git-checks --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

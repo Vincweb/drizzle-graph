@@ -1,0 +1,14 @@
+{
+  "name": "drizzle-graph — Drizzle migration graph",
+  "short_name": "drizzle-graph",
+  "description": "Browse and guard a Drizzle migration graph: a git-log-style view of the migration DAG.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1013",
+  "theme_color": "#0e1013",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

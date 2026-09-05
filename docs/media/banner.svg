@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1152" height="412" viewBox="0 0 1152 412" fill="none" role="img" aria-label="Drizzle Graph">
+  <defs>
+    <linearGradient id="rim" x1="140" y1="0" x2="1012" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C5F74F" stop-opacity="0"/>
+      <stop offset="0.28" stop-color="#C5F74F" stop-opacity="0.85"/>
+      <stop offset="0.62" stop-color="#7dd3fc" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-10%" y="-400%" width="120%" height="900%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <clipPath id="card">
+      <rect x="16" y="16" width="1120" height="380" rx="56"/>
+    </clipPath>
+  </defs>
+
+  <rect x="16" y="16" width="1120" height="380" rx="56" fill="#08090B"/>
+  <g clip-path="url(#card)">
+    <rect x="140" y="14" width="872" height="4" fill="url(#rim)" filter="url(#glow)"/>
+    <rect x="140" y="15" width="872" height="2" fill="url(#rim)"/>
+  </g>
+  <rect x="16.75" y="16.75" width="1118.5" height="378.5" rx="55.25" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/>
+
+  <!-- Drizzle mark, from drizzle-team/drizzle-orm misc/readme/logo-github-sq-dark.svg -->
+  <g transform="translate(96 169) scale(2.04) translate(-13.03 -12.68)">
+    <rect width="5.41766" height="22.979" transform="matrix(0.873028 0.48767 -0.497212 0.867629 24.459 24.3583)" fill="#C5F74F"/>
+    <rect width="5.41766" height="22.979" transform="matrix(0.873028 0.48767 -0.497212 0.867629 43.2793 12.6755)" fill="#C5F74F"/>
+    <rect width="5.41766" height="22.979" transform="matrix(0.873028 0.48767 -0.497212 0.867629 72.2383 12.676)" fill="#C5F74F"/>
+    <rect width="5.41766" height="22.979" transform="matrix(0.873028 0.48767 -0.497212 0.867629 53.4121 24.3583)" fill="#C5F74F"/>
+  </g>
+
+  <text x="262" y="235" font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="86" font-weight="700" letter-spacing="-2.5" fill="#F3F4F6">Drizzle<tspan fill="#C5F74F"> Graph</tspan></text>
+
+  <line x1="838" y1="126" x2="838" y2="286" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+
+  <!-- the migration DAG, newest first, in the page's own lane colours -->
+  <g transform="translate(936 108)" fill="none" stroke-width="4.5" stroke-linecap="round">
+    <path d="M20 20 V72" stroke="#3b82f6"/>
+    <path d="M20 72 V124" stroke="#3b82f6"/>
+    <path d="M20 124 V176" stroke="#3b82f6"/>
+    <path d="M76 20 V72" stroke="#f97316"/>
+    <path d="M76 72 C76 100 20 96 20 124" stroke="#f97316"/>
+    <circle cx="20" cy="20" r="8" fill="#3b82f6" stroke="#08090B" stroke-width="4"/>
+    <circle cx="76" cy="20" r="8" fill="#f97316" stroke="#08090B" stroke-width="4"/>
+    <circle cx="20" cy="72" r="8" fill="#3b82f6" stroke="#08090B" stroke-width="4"/>
+    <circle cx="76" cy="72" r="8" fill="#f97316" stroke="#08090B" stroke-width="4"/>
+    <circle cx="20" cy="124" r="11" fill="#3b82f6" stroke="#08090B" stroke-width="4"/>
+    <circle cx="20" cy="176" r="8" fill="#3b82f6" stroke="#08090B" stroke-width="4"/>
+  </g>
+</svg>

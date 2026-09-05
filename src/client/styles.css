@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+@source './';
+
+/* The palette the whole page reads from, light first. */
+@theme {
+  --color-bg: #fbfbfd;
+  --color-panel: #ffffff;
+  --color-line: #e3e5ea;
+  --color-text: #16181d;
+  --color-muted: #6b7280;
+  --color-accent: #3b82f6;
+  --color-warn-bg: #fff7ed;
+  --color-warn-line: #fdba74;
+  --color-ok-bg: #f0fdf4;
+  --color-ok-line: #86efac;
+  --color-code-bg: #f6f7f9;
+
+  --font-sans: ui-sans-serif, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, monospace;
+}
+
+/* Same tokens, dark. Declared after @theme so these win. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e1013;
+    --color-panel: #16191e;
+    --color-line: #262b33;
+    --color-text: #e6e8ec;
+    --color-muted: #8b93a1;
+    --color-warn-bg: #2a1c0c;
+    --color-warn-line: #7c4a12;
+    --color-ok-bg: #0d1f14;
+    --color-ok-line: #1f5133;
+    --color-code-bg: #101318;
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}

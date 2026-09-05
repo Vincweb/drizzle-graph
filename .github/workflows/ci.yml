@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm type-check
+      - run: pnpm test
+      - run: pnpm build
+      - name: Smoke-test the built CLI on the fixtures
+        run: |
+          node dist/cli.js --dir test/fixtures/single-head --check
+          if node dist/cli.js --dir test/fixtures/two-heads --check; then
+            echo "expected a non-zero exit on the two-head fixture"
+            exit 1
+          fi

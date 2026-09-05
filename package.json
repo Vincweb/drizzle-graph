@@ -1,0 +1,81 @@
+{
+  "name": "drizzle-graph",
+  "version": "0.1.0",
+  "description": "Browse and guard a Drizzle migration graph \u2014 a git-log-style view of the migration DAG, plus a CI guard against open heads",
+  "keywords": [
+    "drizzle",
+    "drizzle-orm",
+    "drizzle-kit",
+    "migrations",
+    "migration-graph",
+    "dag",
+    "postgres",
+    "cli",
+    "devtools"
+  ],
+  "homepage": "https://github.com/Vincweb/drizzle-graph#readme",
+  "bugs": "https://github.com/Vincweb/drizzle-graph/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vincweb/drizzle-graph.git"
+  },
+  "license": "MIT",
+  "author": "Vincent Caudron (https://github.com/Vincweb)",
+  "type": "module",
+  "bin": {
+    "drizzle-graph": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.24.0",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 100
+  },
+  "scripts": {
+    "dev": "tsx scripts/dev.ts",
+    "dev:api": "tsx src/cli.ts",
+    "dev:web": "vite",
+    "build": "tsup && vite build",
+    "lint": "eslint .",
+    "type-check": "tsc",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "tsx --test test/*.test.ts",
+    "check": "pnpm lint && pnpm type-check && pnpm test && pnpm build",
+    "prepublishOnly": "pnpm check"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-query": "^5.102.8",
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^9.39.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "prettier": "^3.4.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
+    "tsup": "^8.3.6",
+    "tsx": "^4.20.3",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0",
+    "vite": "^8.2.2"
+  }
+}
