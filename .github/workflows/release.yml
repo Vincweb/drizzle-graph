@@ -46,7 +46,8 @@ jobs:
 
               npm i -D https://github.com/$REPO/releases/download/$TAG/$FILE
 
-          Or straight from the repository, which builds it on install:
+          Or, with npm, from the repository itself — it builds as it installs (pnpm blocks that
+          build unless the package is in \`allowBuilds\`, so the tarball above is the shorter road):
 
               npm i -D github:$REPO#$TAG
           "

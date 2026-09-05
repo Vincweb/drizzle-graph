@@ -45,20 +45,23 @@ invisible until they hurt:
 
 ## Install
 
-Every release carries a built tarball, so there is no registry in the way:
+Every [release](https://github.com/Vincweb/drizzle-graph/releases) carries a built tarball, so
+there is no registry — and nothing to build — in the way:
 
 ```sh
 npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.0/drizzle-graph-0.1.0.tgz
+pnpm add -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.0/drizzle-graph-0.1.0.tgz
 ```
 
-Or straight from the repository, which builds it as it installs:
+Or from the repository itself, which npm builds as it installs:
 
 ```sh
 npm i -D github:Vincweb/drizzle-graph
-pnpm add -D github:Vincweb/drizzle-graph
 ```
 
-Then `pnpm drizzle-graph`, or `drizzle-graph` on its own inside a package script.
+pnpm refuses to run that build unless the package is listed in `allowBuilds`, so with pnpm the
+tarball above is the shorter road. Either way it lands as `drizzle-graph` in your package scripts,
+or `pnpm drizzle-graph` from a shell.
 
 Requires Node 20+. Works with any Drizzle Kit v1 migrations folder (one directory per migration,
 each holding `migration.sql` and `snapshot.json`).
