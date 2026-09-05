@@ -9,6 +9,7 @@
 A git-log-style view of the Drizzle Kit v1 migration DAG, and a CI guard that fails
 a pull request before it can leave your target branch forked.
 
+[![npm](https://img.shields.io/npm/v/drizzle-graph?style=flat-square&label=npm&labelColor=08090b&color=3b82f6)](https://www.npmjs.com/package/drizzle-graph)
 [![release](https://img.shields.io/github/v/release/Vincweb/drizzle-graph?style=flat-square&label=release&labelColor=08090b&color=3b82f6)](https://github.com/Vincweb/drizzle-graph/releases/latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/Vincweb/drizzle-graph/ci.yml?branch=main&style=flat-square&label=CI&labelColor=08090b&color=3b82f6)](https://github.com/Vincweb/drizzle-graph/actions/workflows/ci.yml)
 [![node](https://img.shields.io/badge/node-%E2%89%A5%2020-3b82f6?style=flat-square&labelColor=08090b)](package.json)
@@ -45,23 +46,23 @@ invisible until they hurt:
 
 ## Install
 
-Every [release](https://github.com/Vincweb/drizzle-graph/releases) carries a built tarball, so
-there is no registry — and nothing to build — in the way:
-
 ```sh
-npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.0/drizzle-graph-0.1.0.tgz
-pnpm add -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.0/drizzle-graph-0.1.0.tgz
+npm i -D drizzle-graph
+pnpm add -D drizzle-graph
 ```
 
-Or from the repository itself, which npm builds as it installs:
+Or run it without installing anything:
 
 ```sh
-npm i -D github:Vincweb/drizzle-graph
+npx drizzle-graph
 ```
 
-pnpm refuses to run that build unless the package is listed in `allowBuilds`, so with pnpm the
-tarball above is the shorter road. Either way it lands as `drizzle-graph` in your package scripts,
-or `pnpm drizzle-graph` from a shell.
+Every [release](https://github.com/Vincweb/drizzle-graph/releases) also carries the built tarball,
+if you would rather not go through a registry:
+
+```sh
+npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.1/drizzle-graph-0.1.1.tgz
+```
 
 Requires Node 20+. Works with any Drizzle Kit v1 migrations folder (one directory per migration,
 each holding `migration.sql` and `snapshot.json`).

@@ -8,3 +8,6 @@ dist
 
 # …except the decoy the discovery test needs
 !test/fixtures/discover/node_modules/
+
+# Local pack output
+*.tgz

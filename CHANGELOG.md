@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Published to npm: `npm i -D drizzle-graph`, or `npx drizzle-graph` with nothing installed. Every
+  release still carries the built tarball for installs that skip the registry.
+
 ## 0.1.0
 
 First release.

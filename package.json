@@ -1,6 +1,6 @@
 {
   "name": "drizzle-graph",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Browse and guard a Drizzle migration graph \u2014 a git-log-style view of the migration DAG, plus a CI guard against open heads",
   "keywords": [
     "drizzle",
