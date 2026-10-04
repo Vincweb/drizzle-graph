@@ -27,7 +27,7 @@ a pull request before it can leave your target branch forked.
 <br>
 
 ```sh
-drizzle-graph            # browse it
+drizzle-graph            # browse it — opens in your browser
 drizzle-graph --check    # fail CI when the graph has more than one head
 ```
 
@@ -73,9 +73,15 @@ each holding `migration.sql` and `snapshot.json`).
 drizzle-graph                             # serves ./drizzle, or offers what it finds
 drizzle-graph --dir packages/db/drizzle   # anywhere else
 drizzle-graph --port 5000
+drizzle-graph --no-open                   # print the URL, open nothing
 ```
 
-Open the printed URL. **`/` is a folder picker** holding what it found under the working directory:
+The page **opens in your default browser** as soon as the server is up, and the URL is printed
+all the same. Nothing opens under `CI`, nor with `--no-open`. Without `--port`, a busy `4600` is no
+reason to stop: a second drizzle-graph — on another checkout, say — takes the next free port and
+says which.
+
+**`/` is a folder picker** holding what it found under the working directory:
 the folders a `drizzle.config.*` declares as its `out`, and the ones that simply look like a
 migrations folder — each with how many migrations it holds and where it came from. Pick one and its
 graph opens at **`/graph?dir=packages/db/drizzle`**; the path in the header takes you back to the
@@ -83,7 +89,7 @@ picker, without restarting anything.
 
 The folder is in the URL, not in the server, so a graph can be reloaded, bookmarked, opened in a
 second tab beside another folder, or sent to someone with the same checkout — and ⌘-click on a
-candidate opens it in a tab of its own. Starting with `--dir` prints that link directly.
+candidate opens it in a tab of its own. Starting with `--dir` opens that link directly.
 
 There is also a path field, and it **completes as you type**, one directory at a time, the way a
 shell does: what you typed before the last slash is listed, what follows filters it, `Tab` takes
@@ -150,14 +156,15 @@ It reads only the filesystem and `git` — no database connection, and no `.env`
 
 ## Options
 
-| Option             | Default     | What it does                                             |
-| ------------------ | ----------- | -------------------------------------------------------- |
-| `-d, --dir <path>` | `./drizzle` | migrations folder                                        |
-| `-p, --port <n>`   | `4600`      | port to serve on                                         |
-| `--host <host>`    | `127.0.0.1` | host to bind                                             |
-| `-c, --check`      |             | print the open heads, exit 1 when there is more than one |
-| `-h, --help`       |             | show the usage                                           |
-| `-v, --version`    |             | show the version                                         |
+| Option             | Default     | What it does                                              |
+| ------------------ | ----------- | --------------------------------------------------------- |
+| `-d, --dir <path>` | `./drizzle` | migrations folder                                         |
+| `-p, --port <n>`   | `4600`      | port to serve on; left out, the next free one from `4600` |
+| `--host <host>`    | `127.0.0.1` | host to bind                                              |
+| `-c, --check`      |             | print the open heads, exit 1 when there is more than one  |
+| `--no-open`        |             | print the URL without opening a browser                   |
+| `-h, --help`       |             | show the usage                                            |
+| `-v, --version`    |             | show the version                                          |
 
 ## API
 
@@ -255,6 +262,7 @@ src/server/       scan.ts     the DAG, the SQL summary, the git history
                   check.ts    the CI guard
                   server.ts   the /api routes, each reading the folder its request names
                   static.ts   the built client, served from dist/client
+                  browser.ts  the URL to print, and the browser it is handed to
 src/client/       the page: App.tsx, router.ts (/ and /graph), queries.ts, components/
                   public/     favicon, icons and the web manifest
 ```

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import type { Server } from 'node:http'
+import http, { type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { after, test } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -146,5 +146,19 @@ test('a folder passed in at startup is what a request naming none reads', async 
     )
   } finally {
     ready.close()
+  }
+})
+
+test('a busy default port falls through to the next one', async () => {
+  const squatter = http.createServer().listen(0, '127.0.0.1')
+  const busy = Number(new URL(await originOf(squatter)).port)
+  const ready = serveMigrationGraph({ port: busy, strictPort: false })
+  try {
+    const moved = await originOf(ready)
+    assert.equal(new URL(moved).port, String(busy + 1))
+    assert.equal((await fetch(`${moved}/api/dirs`)).status, 200)
+  } finally {
+    ready.close()
+    squatter.close()
   }
 })

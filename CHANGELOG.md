@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- The page opens in the default browser once the server is up. `--no-open` prints the URL
+  alone, and nothing opens under `CI`.
+- Without `--port`, a busy `4600` falls through to the next free port instead of exiting, so a
+  second drizzle-graph can run beside the first. A port named with `--port` is still required.
+- The printed URL is one a browser can visit: `--host 0.0.0.0` prints `localhost`, and an IPv6
+  host gets its brackets.
+
 ## 0.1.1
 
 - Published to npm: `npm i -D drizzle-graph`, or `npx drizzle-graph` with nothing installed. Every

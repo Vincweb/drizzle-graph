@@ -1,6 +1,8 @@
 import http from 'http'
+import type { AddressInfo } from 'net'
 import path from 'path'
 import { graphPath } from '../shared/routes'
+import { openInBrowser, pageOrigin } from './browser'
 import {
   browseDirectories,
   canonicalDir,
@@ -43,6 +45,8 @@ export const serveMigrationGraph = ({
   host = '127.0.0.1',
   root = process.cwd(),
   version = '',
+  strictPort = true,
+  open = false,
 }: {
   /**
    * The folder to serve when a request names none — what the CLI was started on. Null leaves
@@ -55,6 +59,13 @@ export const serveMigrationGraph = ({
   root?: string
   /** Shown by the page. The CLI passes its own. */
   version?: string
+  /**
+   * False lets a busy port fall through to the next free one, the way the CLI does when no
+   * `--port` was asked for. True exits instead: a port someone named is the one they expect.
+   */
+  strictPort?: boolean
+  /** Open the page in the default browser once the server is listening. */
+  open?: boolean
 }) => {
   const built = clientIsBuilt()
   // Set by `pnpm dev`: the page then lives on the Vite dev server, not in dist/client.
@@ -190,29 +201,51 @@ export const serveMigrationGraph = ({
     }
   })
 
+  /**
+   * How far a busy port falls through. In dev it never does: Vite proxies to the port it was told
+   * about, and the next one up is Vite's own.
+   */
+  const lastPort = strictPort || devWeb || port === 0 ? port : Math.min(port + 10, 65535)
+  let tried = port
+
   server.on('error', (error) => {
     if (error && typeof error === 'object' && 'code' in error && error.code === 'EADDRINUSE') {
-      console.error(`✗ port ${port} is already in use — pass --port <n> to pick another`)
+      // Usually another drizzle-graph, on another checkout: this one takes the next port up.
+      if (tried < lastPort) {
+        server.listen(++tried, host)
+        return
+      }
+      console.error(
+        tried === port
+          ? `✗ port ${port} is already in use — pass --port <n> to pick another`
+          : `✗ ports ${port}–${lastPort} are all in use — pass --port <n> to pick another`,
+      )
       process.exit(1)
     }
     throw error
   })
 
-  server.listen(port, host, () => {
+  server.once('listening', () => {
     if (!built) console.warn(process.env.DRIZZLE_GRAPH_DEV ? DEV_CLIENT : MISSING_CLIENT)
+    // Read back rather than assumed: the port may have fallen through, or been 0.
+    const { port: bound } = server.address() as AddressInfo
+    if (bound !== port && port !== 0) console.log(`Port ${port} is in use — took ${bound} instead.`)
     // In dev the page is on the Vite server, so that is where a link has to point.
-    const page = devWeb ?? `http://${host}:${port}`
-    if (startupDir) {
-      // The link opens that folder straight away; `/` is the picker, whether or not there is one.
-      console.log(`drizzle-graph → ${page}${graphPath(canonicalDir(root, startupDir))}`)
+    const page = devWeb ?? pageOrigin(host, bound)
+    // The link opens that folder straight away; `/` is the picker, whether or not there is one.
+    const link = startupDir ? `${page}${graphPath(canonicalDir(root, startupDir))}` : page
+    console.log(`drizzle-graph → ${link}`)
+    if (startupDir)
       console.log(`Serving ${startupDir}, rescanned on every request. Ctrl-C to stop.`)
-    } else {
-      console.log(`drizzle-graph → ${page}`)
+    else
       console.log(
         `No migrations folder yet — open the page and pick one. Looking under ${path.resolve(root)}.`,
       )
-    }
+    // Never in dev: `tsx watch` restarts this on every save, and each restart would be a new tab.
+    if (open && !devWeb) openInBrowser(link)
   })
+
+  server.listen(port, host)
 
   const shutdown = () => {
     server.close(() => process.exit(0))

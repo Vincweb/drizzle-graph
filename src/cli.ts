@@ -19,11 +19,12 @@ Options
   -p, --port <n>      port to serve on (default: ${DEFAULT_PORT})
       --host <host>   host to bind (default: ${DEFAULT_HOST})
   -c, --check         print the open heads and exit 1 when there is more than one
+      --no-open       print the URL without opening a browser
   -h, --help          show this message
   -v, --version       show the version
 
 Examples
-  drizzle-graph                        serve ./drizzle on http://127.0.0.1:${DEFAULT_PORT},
+  drizzle-graph                        serve ./drizzle on http://127.0.0.1:${DEFAULT_PORT} and open it,
                                        or offer what it finds when there is no ./drizzle
   drizzle-graph --dir packages/db/drizzle
   drizzle-graph --check                use it as a CI guard
@@ -77,9 +78,10 @@ export const run = (argv = process.argv.slice(2)): number | null => {
     return checkMigrationHeads({ migrationsDir })
   }
 
-  const port = Number(valueOf(argv, '-p', '--port') ?? DEFAULT_PORT)
+  const askedPort = valueOf(argv, '-p', '--port')
+  const port = Number(askedPort ?? DEFAULT_PORT)
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    console.error(`✗ invalid port: ${valueOf(argv, '-p', '--port')}`)
+    console.error(`✗ invalid port: ${askedPort}`)
     return 1
   }
 
@@ -90,6 +92,10 @@ export const run = (argv = process.argv.slice(2)): number | null => {
     host: valueOf(argv, '--host') ?? DEFAULT_HOST,
     root: process.cwd(),
     version: readVersion(),
+    // The default port is only a preference; one named on the command line is a requirement.
+    strictPort: askedPort !== undefined,
+    // A CI runner has no one to show a browser to.
+    open: !has(argv, '--no-open') && !process.env.CI,
   })
   return null
 }
