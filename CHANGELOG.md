@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - The page opens in the default browser once the server is up. `--no-open` prints the URL
   alone, and nothing opens under `CI`.

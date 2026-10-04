@@ -61,7 +61,7 @@ Every [release](https://github.com/Vincweb/drizzle-graph/releases) also carries 
 if you would rather not go through a registry:
 
 ```sh
-npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.1.1/drizzle-graph-0.1.1.tgz
+npm i -D https://github.com/Vincweb/drizzle-graph/releases/download/v0.2.0/drizzle-graph-0.2.0.tgz
 ```
 
 Requires Node 20+. Works with any Drizzle Kit v1 migrations folder (one directory per migration,
